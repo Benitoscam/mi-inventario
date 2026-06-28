@@ -66,6 +66,47 @@ function agregarProducto() {
   });
 }
 
+// Calcular el valor total del producto
+function calcularValor() {
+  rl.question("\n Ingrese el nombre del producto: ", (terminoBusqueda) => {
+    // Usamos el filter para encontrar coincidencias
+    const resultados = inventario.filter(
+      (producto) =>
+        producto.nombre.trim().toLowerCase() ===
+        terminoBusqueda.trim().toLowerCase(),
+    );
+
+    if (resultados.length > 0) {
+      console.log("\n==========================================");
+      console.log(`\n         Productos encontrado`);
+      console.log("\n==========================================");
+      resultados.forEach((producto) => {
+        console.log(` ID: ${producto.id}`);
+        console.log(` NOMBRE: ${producto.nombre}`);
+        console.log(` PRECIO: ${producto.precio}`);
+        console.log(` STOCK: ${producto.stock}`);
+        console.log("\n==========================================");
+        const valorProducto = producto.precio * producto.stock;
+        console.log(`Valor total del producto: ${valorProducto}`);
+      });
+    } else {
+      console.log("\n   🚨 No se encontraron coincidencias.");
+    }
+    // Si la propiedad filter encuentra o no una conciencia preguntara al usuario si quiere hacer otra búsqueda o no
+    rl.question(
+      "\n Quieres consultar el valor de otro producto?  Y/N ",
+      (respuesta) => {
+        if (respuesta.toLocaleLowerCase() === "y") {
+          calcularValor();
+        } else {
+          mostrarMenu();
+          preguntarOpcion();
+        }
+      },
+    );
+  });
+}
+
 // Mostrar la lista de lo productos registrados
 function listarProductos() {
   if (inventario.length === 0) {
@@ -77,8 +118,8 @@ function listarProductos() {
     return;
   }
 
-  console.log("\n LISTA DE PRODUCTOS");
-  console.log("==========================================");
+  // console.log("\n LISTA DE PRODUCTOS");
+  // console.log("==========================================");
 
   // Usamos el foreach para recorrer el inventario
   inventario.forEach((producto) => {
@@ -160,13 +201,28 @@ function preguntarOpcion() {
     // console.log("Luego implementamos el switch para las demás funciones");
     switch (opcion) {
       case "1":
+        console.log("\n===================================");
+        console.log("      AGREGAR PRODUCTO     ");
+        console.log("===================================");
         agregarProducto();
         break;
       case "2":
+        console.log("\n===================================");
+        console.log("      LISTA DE PRODUCTOS     ");
+        console.log("===================================");
         listarProductos();
         break;
       case "3":
+        console.log("\n===================================");
+        console.log("      BUSCAR PRODUCTO     ");
+        console.log("===================================");
         buscarProducto();
+        break;
+      case "4":
+        console.log("\n===================================");
+        console.log("      CALCULAR VALOR DEL PRODUCTO     ");
+        console.log("===================================");
+        calcularValor();
         break;
       default:
         console.log("\n Opción no valida o no implementada aún");
