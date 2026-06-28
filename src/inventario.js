@@ -66,6 +66,39 @@ function agregarProducto() {
   });
 }
 
+// Eliminar producto por su ID
+function eliminarProducto() {
+  rl.question(
+    "\n Ingrese el ID del producto que desee eliminar: ",
+    (terminoBusqueda) => {
+      const idEliminar = parseInt(terminoBusqueda);
+
+      // Validamos que el dato ingresado sea un número
+      if (isNaN(idEliminar)) {
+        console.log("\n 🚨 Error: el ID debe ser un número");
+        eliminarProducto();
+        return;
+      }
+      // Guardamos el tamaño actual para verificar si se borro un producto
+      const totalAntes = inventario.length;
+      // Aplicamos filter: "se usa para quedarte solo con los elementos que cumplen una condición"
+      // La condición es: mantener todos los productos cuyo ID NO SEA el que queremos borrar
+      inventario = inventario.filter((producto) => producto.id !== idEliminar);
+
+      if (inventario.length < totalAntes) {
+        console.log(
+          `\n ✅ Producto con ID: "${idEliminar}" eliminado correctamente`,
+        );
+        mostrarMenu();
+        preguntarOpcion();
+      } else {
+        console.log(`\n 🚨 No se encontró ningún con el ID: ${idEliminar}`);
+        eliminarProducto();
+      }
+    },
+  );
+}
+
 // Calcular el valor total del producto
 function calcularValor() {
   rl.question("\n Ingrese el nombre del producto: ", (terminoBusqueda) => {
@@ -223,6 +256,12 @@ function preguntarOpcion() {
         console.log("      CALCULAR VALOR DEL PRODUCTO     ");
         console.log("===================================");
         calcularValor();
+        break;
+      case "5":
+        console.log("\n===================================");
+        console.log("      ELIMINAR PRODUCTO     ");
+        console.log("===================================");
+        eliminarProducto();
         break;
       default:
         console.log("\n Opción no valida o no implementada aún");
