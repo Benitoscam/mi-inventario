@@ -38,7 +38,7 @@ function agregarProducto() {
 
       rl.question("\n Stock disponible: ", (stock) => {
         const stockNum = parseInt(stock);
-        if (isNaN(stockNum) || stockNum <= 0) {
+        if (isNaN(stockNum) || stockNum < 0) {
           console.log(
             "Error: Stock invalido, debe ser un número mayor o igual a 0",
           );
@@ -92,7 +92,9 @@ function eliminarProducto() {
         mostrarMenu();
         preguntarOpcion();
       } else {
-        console.log(`\n 🚨 No se encontró ningún con el ID: ${idEliminar}`);
+        console.log(
+          `\n 🚨 No se encontró ningún producto con el ID: ${idEliminar}`,
+        );
         eliminarProducto();
       }
     },
@@ -111,7 +113,7 @@ function calcularValor() {
 
     if (resultados.length > 0) {
       console.log("\n==========================================");
-      console.log(`\n         Productos encontrado`);
+      console.log(`\n         Productos encontrados`);
       console.log("\n==========================================");
       resultados.forEach((producto) => {
         console.log(` ID: ${producto.id}`);
@@ -120,7 +122,7 @@ function calcularValor() {
         console.log(` STOCK: ${producto.stock}`);
         console.log("\n==========================================");
         const valorProducto = producto.precio * producto.stock;
-        console.log(`Valor total del producto: ${valorProducto}`);
+        console.log(`Valor total del producto: ${valorProducto.toFixed(2)}`);
       });
     } else {
       console.log("\n   🚨 No se encontraron coincidencias.");
